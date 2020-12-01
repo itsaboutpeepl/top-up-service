@@ -58,8 +58,8 @@ router.post('/create_link_token_for_payment', async (req, res) => {
       user: {
         client_user_id: user.id
       },
-      client_id: config.get('plaid.clientID'),
-      secret: config.get('plaid.secret'),
+      client_id: config.get('clientID'),
+      secret: config.get('secret'),
       client_name: 'Peepl wallet',
       country_codes,
       language,
