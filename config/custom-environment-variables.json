@@ -4,14 +4,6 @@
     "secret": "API_SECRET",
     "port": "PORT"
   },
-  "aws": {
-    "secrets": {
-      "secretId": "AWS_SECRET_ID",
-      "manager": {
-        "region": "AWS_SECRET_MANAGER_REGION"
-      }
-    }
-  },
   "mongo": {
     "uri": "MONGO_URI",
     "debug": "MONGO_DEBUG"
