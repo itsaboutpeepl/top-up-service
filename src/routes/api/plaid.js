@@ -30,15 +30,21 @@ router.post('/create_link_token_for_payment', async (req, res) => {
       value = 1,
       reference = 'Test Funding 123',
       currency = 'GBP',
-      linkConfig,
+      linkConfig = {
+        android_package_name: 'com.itsaboutpeepl.peepl',
+        products: ['payment_initiation'],
+        country_codes: ['GB'],
+        language: 'en',
+        webhook: `${config.get('api.protocol')}://${req.headers.host}/api/plaid/webhook`
+      },
       recipient_id = 'recipient-id-sandbox-358651a9-d7c9-48a1-aced-4d8d19cefc41'
     } = req.body
     const {
-      android_package_name = 'com.itsaboutpeepl.peepl',
-      products = ['payment_initiation'],
-      country_codes = ['GB'],
-      language = 'en',
-      webhook = `${config.get('api.protocol')}://${req.headers.host}/api/plaid/webhook`
+      android_package_name,
+      products,
+      country_codes,
+      language,
+      webhook
     } = linkConfig
     const user = await UserWallet.findOneAndUpdate({ walletAddress }, { $setOnInsert: { walletAddress } }, { upsert: true })
     const { payment_id } = await plaidClient.createPayment(
