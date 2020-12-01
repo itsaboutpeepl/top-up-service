@@ -3,13 +3,13 @@ const config = require('config')
 const router = require('express').Router()
 const { plaidClient } = require('@services/plaid')
 const mongoose = require('mongoose')
-const UserWallet = mongoose.model('UserWallet')
+const User = mongoose.model('User')
 const Account = mongoose.model('Account')
 
 router.post('/set_access_token', async (req, res) => {
   const { publicToken, walletAddress } = req.body
   try {
-    const user = await UserWallet.findOneAndUpdate({ walletAddress }, { $setOnInsert: { walletAddress } }, { upsert: true })
+    const user = await User.findOneAndUpdate({ walletAddress }, { $setOnInsert: { walletAddress } }, { upsert: true })
     const exchangePublicTokenResponse = await plaidClient.exchangePublicToken(publicToken)
     const { access_token, item_id } = exchangePublicTokenResponse
     const { item: { institution_id } } = await plaidClient.getItem(access_token)
@@ -46,7 +46,7 @@ router.post('/create_link_token_for_payment', async (req, res) => {
       language,
       webhook
     } = linkConfig
-    const user = await UserWallet.findOneAndUpdate({ walletAddress }, { $setOnInsert: { walletAddress } }, { upsert: true })
+    const user = await User.findOneAndUpdate({ walletAddress }, { $setOnInsert: { walletAddress } }, { upsert: true })
     const { payment_id } = await plaidClient.createPayment(
       recipient_id,
       reference,

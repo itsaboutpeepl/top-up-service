@@ -8,6 +8,6 @@ const UserSchema = new Schema({
 
 UserSchema.index({ walletAddress: 1 }, { unique: true })
 
-const User = model('UserWallet', UserSchema)
+const User = model('User', UserSchema)
 
 module.exports = User
