@@ -29,7 +29,7 @@ const init = async () => {
   mongoose.set('useFindAndModify', false)
   mongoose.set('useCreateIndex', true)
 
-  mongoose.connect(config.get('mongo.uri')).catch((error) => {
+  mongoose.connect(config.get('mongo.uri'), { useNewUrlParser: true }).catch((error) => {
     console.error(error)
     process.exit(1)
   })
