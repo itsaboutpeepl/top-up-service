@@ -2,16 +2,15 @@ module.exports = {
   api: {
     allowCors: true,
     secret: 'secret',
-    tokenExpiresIn: '7d',
     port: 3000
   },
   mongo: {
     debug: true,
-    uri: 'mongodb://localhost/test'
+    uri: 'mongodb://localhost/plaid'
   },
-  mail: {
-    sendgrid: {
-      templates: {}
-    }
+  plaid: {
+    clientID: 'clientId',
+    secret: 'secret',
+    env: 'sandbox'
   }
 }

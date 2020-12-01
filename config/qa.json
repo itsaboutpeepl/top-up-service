@@ -1,2 +1,7 @@
 {
+  "plaid": {
+    "clientID": "clientId",
+    "secret": "secret",
+    "env": "development"
+  }
 }

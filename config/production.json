@@ -4,5 +4,10 @@
   },
   "mongo": {
     "debug": false
+  },
+  "plaid": {
+    "clientID": "clientId",
+    "secret": "secret",
+    "env": "production"
   }
 }

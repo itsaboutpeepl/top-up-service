@@ -1,25 +1,23 @@
 {
   "api": {
-    "allowCors": "COMMUNITY_API_ALLOW_CORS",
-    "secret": "COMMUNITY_API_SECRET",
-    "tokenExpiresIn": "COMMUNITY_TOKEN_EXPIRES_IN",
+    "allowCors": "API_ALLOW_CORS",
+    "secret": "API_SECRET",
     "port": "PORT"
   },
   "aws": {
     "secrets": {
-      "secretId": "COMMUNITY_AWS_SECRET_ID",
-       "manager": {
-        "region": "COMMUNITY_AWS_SECRET_MANAGER_REGION"
+      "secretId": "AWS_SECRET_ID",
+      "manager": {
+        "region": "AWS_SECRET_MANAGER_REGION"
       }
     }
   },
   "mongo": {
-    "uri": "COMMUNITY_MONGO_URI",
-    "debug": "COMMUNITY_MONGO_DEBUG"
+    "uri": "MONGO_URI",
+    "debug": "MONGO_DEBUG"
   },
-  "secrets": {
-    "accounts": {
-      "seed": "COMMUNITY_SECRETS_ACCOUNTS_SEED"
-    }
+  "plaid": {
+    "secret": "PLAID_SECRET",
+    "clientID": "PLAID_CLIENT_ID"
   }
 }
