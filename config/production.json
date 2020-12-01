@@ -1,6 +1,7 @@
 {
   "api": {
-    "allowCors": false
+    "allowCors": false,
+    "protocol": "https"
   },
   "mongo": {
     "debug": false

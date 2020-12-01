@@ -2,6 +2,7 @@ module.exports = {
   api: {
     allowCors: true,
     secret: 'secret',
+    protocol: 'http',
     port: 3000
   },
   mongo: {

@@ -1,4 +1,7 @@
 {
+  "api": {
+    "protocol": "https"
+  },
   "plaid": {
     "clientID": "clientId",
     "secret": "secret",

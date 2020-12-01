@@ -1,4 +1,5 @@
 /* eslint camelcase: "off" */
+const config = require('config')
 const router = require('express').Router()
 const { plaidClient } = require('@services/plaid')
 const mongoose = require('mongoose')
@@ -35,7 +36,8 @@ router.post('/create_link_token_for_payment', async (req, res) => {
       android_package_name = 'com.itsaboutpeepl.peepl',
       products = ['payment_initiation'],
       country_codes = ['GB'],
-      language = 'en'
+      language = 'en',
+      webhook = `${config.get('api.protocol')}://${req.headers.host}/api/plaid/webhook`
     } = linkConfig
     const recipient_id = 'recipient-id-sandbox-358651a9-d7c9-48a1-aced-4d8d19cefc41'
     const user = await UserWallet.findOneAndUpdate({ walletAddress }, { $setOnInsert: { walletAddress } }, { upsert: true })
@@ -53,7 +55,7 @@ router.post('/create_link_token_for_payment', async (req, res) => {
       client_name: 'Peepl wallet',
       country_codes,
       language,
-      webhook: 'http://agnin.fuse.io/api/plaid/webhook',
+      webhook,
       payment_initiation: { payment_id },
       products,
       android_package_name
