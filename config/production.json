@@ -1,7 +1,8 @@
 {
   "api": {
     "allowCors": false,
-    "protocol": "https"
+    "protocol": "https",
+    "port": 80
   },
   "mongo": {
     "debug": false
