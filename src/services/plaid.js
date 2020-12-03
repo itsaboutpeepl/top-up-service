@@ -4,7 +4,7 @@ const config = require('config')
 const plaidClient = new plaid.Client({
   clientID: config.get('plaid.clientID'),
   secret: config.get('plaid.secret'),
-  env: plaid.environments.sandbox
+  env: plaid.environments.development // plaid.environments[config.get('plaid.env')]
 })
 
 module.exports = {
