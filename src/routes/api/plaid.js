@@ -88,17 +88,15 @@ router.post('/webhook', async (req, res) => {
   try {
     if (old_payment_status === 'PAYMENT_STATUS_PROCESSING' && new_payment_status === 'PAYMENT_STATUS_INITIATED') {
       const payment = await Payment.findOne({ paymentId: payment_id })
-      console.log({ ...payment })
       const user = await User.findById(payment.userId)
-      console.log({ ...user })
-      const job = await mintTokensAndSendToken({
+      const { data } = await mintTokensAndSendToken({
         toAddress: user.walletAddress,
         amount: payment.amount
       })
-      console.log({ ...job })
-      payment.set('fuseJobId', job._id)
+      console.log({ ...data })
+      payment.set('fuseJobId', data._id)
       await payment.save()
-      return res.json({ job })
+      return res.json({ data })
     }
   } catch (e) {
     return res.json({ error })
