@@ -5,6 +5,8 @@ const { plaidClient } = require('@services/plaid')
 const mongoose = require('mongoose')
 const User = mongoose.model('User')
 const Account = mongoose.model('Account')
+const Payment = mongoose.model('Payment')
+const { mintTokensAndSendToken } = require('@utils/fuseApi')
 
 router.post('/set_access_token', async (req, res) => {
   const { publicToken, walletAddress } = req.body
@@ -66,6 +68,7 @@ router.post('/create_link_token_for_payment', async (req, res) => {
       products,
       android_package_name
     }
+    await new Payment({ userId: user.id, paymentId: payment_id, amount: value }).save()
     const createTokenResponse = await plaidClient.createLinkToken(configs)
     return res.json(createTokenResponse)
   } catch (error) {
@@ -74,11 +77,27 @@ router.post('/create_link_token_for_payment', async (req, res) => {
 })
 
 router.post('/webhook', async (req, res) => {
+  console.log({ ...req.body })
+  const {
+    payment_id,
+    new_payment_status,
+    old_payment_status,
+    error
+  } = req.body
   try {
-    console.log({ ...req.body })
-    // Todo - handle webhook events
-    console.log({ webhook: true })
-  } catch (error) {
+    if (old_payment_status === 'PAYMENT_STATUS_INITIATED' && new_payment_status === 'PAYMENT_STATUS_COMPLETED') {
+      const payment = await Payment.findOne({ paymentId: payment_id })
+      const user = await User.findById(payment.userId)
+      const job = await mintTokensAndSendToken({
+        toAddress: user.walletAddress,
+        amount: payment.amount
+      })
+      console.log({ ...job })
+      payment.set('fuseJobId', job._id)
+      await payment.save()
+      return res.json({ job })
+    }
+  } catch (e) {
     return res.json({ error })
   }
 })

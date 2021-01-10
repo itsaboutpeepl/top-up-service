@@ -38,6 +38,7 @@
     "@babel/runtime": "^7.12.5",
     "async": "^3.2.0",
     "aws-sdk": "^2.799.0",
+    "axios": "^0.21.1",
     "body-parser": "^1.19.0",
     "config": "^3.3.2",
     "cors": "^2.8.5",
@@ -53,7 +54,6 @@
     "morgan": "^1.10.0",
     "plaid": "^8.1.0",
     "request": "^2.88.2",
-    "request-promise-native": "^1.0.9",
     "validator": "^13.1.17"
   },
   "devDependencies": {

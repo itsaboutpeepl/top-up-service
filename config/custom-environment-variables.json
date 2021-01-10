@@ -11,5 +11,10 @@
   "plaid": {
     "secret": "PLAID_SECRET",
     "clientID": "PLAID_CLIENT_ID"
+  },
+  "fuse": {
+    "admin": {
+      "jwt": "FUSE_JWT_ADMIN_API"
+    }
   }
 }

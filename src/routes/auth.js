@@ -3,7 +3,7 @@ const config = require('config')
 
 const secret = config.get('api.secret')
 
-var auth = {
+const auth = {
   required: jwt({
     secret: secret,
     credentialsRequired: true
