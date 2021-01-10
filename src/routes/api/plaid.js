@@ -6,7 +6,7 @@ const mongoose = require('mongoose')
 const User = mongoose.model('User')
 const Account = mongoose.model('Account')
 const Payment = mongoose.model('Payment')
-const { mintTokensAndSendToken } = require('@utils/fuseApi')
+const { mintTokensAndSendToken, generateCorrelationId } = require('@utils/fuseApi')
 
 router.post('/set_access_token', async (req, res) => {
   const { publicToken, walletAddress } = req.body
@@ -90,6 +90,7 @@ router.post('/webhook', async (req, res) => {
       const payment = await Payment.findOne({ paymentId: payment_id })
       const user = await User.findById(payment.userId)
       const { data } = await mintTokensAndSendToken({
+        correlationId: generateCorrelationId(),
         toAddress: user.walletAddress,
         amount: payment.amount
       })
