@@ -30,8 +30,9 @@ router.post('/create_link_token_for_payment', async (req, res) => {
     const {
       walletAddress,
       value = 1,
-      reference = 'Test Funding 123',
+      reference = 'Top up',
       currency = 'GBP',
+      isAndroid,
       linkConfig = {
         android_package_name: 'com.itsaboutpeepl.peepl',
         products: ['payment_initiation'],
@@ -67,7 +68,7 @@ router.post('/create_link_token_for_payment', async (req, res) => {
       webhook,
       payment_initiation: { payment_id },
       products,
-      android_package_name
+      android_package_name: isAndroid ? android_package_name : null
     }
     await new Payment({ userId: user.id, paymentId: payment_id, amount: value }).save()
     const createTokenResponse = await plaidClient.createLinkToken(configs)
@@ -78,7 +79,6 @@ router.post('/create_link_token_for_payment', async (req, res) => {
 })
 
 router.post('/webhook', async (req, res) => {
-  console.log({ ...req.body })
   const {
     payment_id,
     new_payment_status,
@@ -95,7 +95,6 @@ router.post('/webhook', async (req, res) => {
         toAddress: user.walletAddress,
         amount: payment.amount
       })
-      console.log({ ...data })
       payment.set('fuseJobId', data._id)
       await payment.save()
       return res.json({ data })
