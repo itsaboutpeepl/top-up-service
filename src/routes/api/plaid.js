@@ -40,8 +40,8 @@ router.post('/create_link_token_for_payment', async (req, res) => {
         language: 'en',
         webhook: `${config.get('api.protocol')}://${req.headers.host}/api/plaid/webhook`
       },
-      // recipient_id = 'recipient-id-development-4b0570e4-3676-4b6d-8ac3-8a2fd99bc897'
-      recipient_id = 'recipient-id-sandbox-358651a9-d7c9-48a1-aced-4d8d19cefc41'
+      recipient_id = 'recipient-id-development-4b0570e4-3676-4b6d-8ac3-8a2fd99bc897'
+      // recipient_id = 'recipient-id-sandbox-358651a9-d7c9-48a1-aced-4d8d19cefc41'
     } = req.body
     const {
       android_package_name,
