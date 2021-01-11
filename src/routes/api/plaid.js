@@ -89,8 +89,9 @@ router.post('/webhook', async (req, res) => {
     if (old_payment_status === 'PAYMENT_STATUS_PROCESSING' && new_payment_status === 'PAYMENT_STATUS_INITIATED') {
       const payment = await Payment.findOne({ paymentId: payment_id })
       const user = await User.findById(payment.userId)
+      const correlationId = generateCorrelationId()
       const { data } = await mintTokensAndSendToken({
-        correlationId: generateCorrelationId(),
+        correlationId,
         toAddress: user.walletAddress,
         amount: payment.amount
       })

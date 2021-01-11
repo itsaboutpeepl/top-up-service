@@ -25,7 +25,7 @@ module.exports = {
   mint: {
     args: {
       networkType: 'fuse',
-      tokenAddress: '0x52d6d59CAfc83d8c5569dF0630Db5715a96D124B'
+      tokenAddress: '0x40AFCD9421577407ABB0d82E2fF25Fd2Ef4c68BD'
     }
   }
 }
