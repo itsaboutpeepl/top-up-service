@@ -22,7 +22,6 @@ const init = async () => {
 
   app.use(morgan('common'))
 
-  app.use(bodyParser.text({ type: '*/*' }))
   app.use(bodyParser.urlencoded({ extended: false }))
   app.use(bodyParser.json())
 

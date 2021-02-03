@@ -1,4 +1,5 @@
 const config = require('config')
+const bodyParser = require('body-parser')
 const router = require('express').Router()
 const { stripeClient } = require('@services/stripe')
 
@@ -58,7 +59,7 @@ router.post('/pay', async (req, res) => {
   }
 })
 
-router.post('/webhook', async (req, res) => {
+router.post('/webhook', bodyParser.text({ type: '*/*' }), async (req, res) => {
   let data, eventType
 
   if (config.get('stripe.webhookSecret')) {
