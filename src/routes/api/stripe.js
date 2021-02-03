@@ -4,7 +4,7 @@ const { stripeClient } = require('@services/stripe')
 
 const mongoose = require('mongoose')
 const PaymentIntent = mongoose.model('PaymentIntent')
-const { mintTokensAndSendToken, generateCorrelationId } = require('@utils/fuseApi')
+// const { mintTokensAndSendToken, generateCorrelationId } = require('@utils/fuseApi')
 
 const generateResponse = intent => {
   // Generate a response based on the intent's status
