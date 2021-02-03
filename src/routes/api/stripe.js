@@ -75,7 +75,7 @@ router.post('/webhook', async (req, res) => {
     } catch (err) {
       return res.sendStatus(400)
     }
-    data = event.data
+    data = event.data.object
     eventType = event.type
   } else {
     // Webhook signing is recommended, but if the secret is not configured in `config.js`,
