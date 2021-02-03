@@ -86,16 +86,16 @@ router.post('/webhook', async (req, res) => {
 
   if (eventType === 'payment_intent.succeeded') {
     console.log('💰 Payment captured!')
-    const { id } = data
-    const paymentIntent = await PaymentIntent.findOne({ paymentIntentId: id })
-    const correlationId = generateCorrelationId()
-    const jobRes = await mintTokensAndSendToken({
-      correlationId,
-      toAddress: paymentIntent.walletAddress,
-      amount: paymentIntent.amount
-    })
-    paymentIntent.set('fuseJobId', jobRes.data._id)
-    await paymentIntent.save()
+    // const { id } = data
+    // const paymentIntent = await PaymentIntent.findOne({ paymentIntentId: id })
+    // const correlationId = generateCorrelationId()
+    // const jobRes = await mintTokensAndSendToken({
+    //   correlationId,
+    //   toAddress: paymentIntent.walletAddress,
+    //   amount: paymentIntent.amount
+    // })
+    // paymentIntent.set('fuseJobId', jobRes.data._id)
+    // await paymentIntent.save()
   } else if (eventType === 'payment_intent.payment_failed') {
     console.log('❌ Payment failed.')
   }
