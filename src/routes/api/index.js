@@ -1,6 +1,7 @@
 const router = require('express').Router()
 
 router.use('/plaid', require('./plaid'))
+router.use('/stripe', require('./stripe'))
 
 router.use(function (err, req, res, next) {
   if (err.name === 'ValidationError') {

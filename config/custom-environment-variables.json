@@ -12,6 +12,10 @@
     "secret": "PLAID_SECRET",
     "clientID": "PLAID_CLIENT_ID"
   },
+  "stripe": {
+    "secret": "STRIPE_SECRET",
+    "webhookSecret": "STRIPE_WEBHOOK_SECRET"
+  },
   "fuse": {
     "admin": {
       "jwt": "FUSE_JWT_ADMIN_API"

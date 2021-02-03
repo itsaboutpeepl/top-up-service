@@ -25,6 +25,18 @@ const init = async () => {
   app.use(bodyParser.urlencoded({ extended: false }))
   app.use(bodyParser.json())
 
+  app.use(
+    express.json({
+      // We need the raw body to verify webhook signatures.
+      // Let's compute it only when hitting the Stripe webhook endpoint.
+      verify: function (req, res, buf) {
+        if (req.originalUrl.includes('stripe/webhook')) {
+          req.rawBody = buf.toString()
+        }
+      }
+    })
+  )
+
   mongoose.set('debug', config.get('mongo.debug'))
   mongoose.set('useFindAndModify', false)
   mongoose.set('useCreateIndex', true)

@@ -54,6 +54,7 @@
     "morgan": "^1.10.0",
     "plaid": "^8.1.0",
     "request": "^2.88.2",
+    "stripe": "^8.132.0",
     "validator": "^13.1.17"
   },
   "devDependencies": {
