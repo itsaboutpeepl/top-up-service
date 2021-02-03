@@ -31,7 +31,7 @@ const generateResponse = intent => {
 }
 
 router.post('/pay', async (req, res) => {
-  const { amount, currency, paymentMethodId, walletAddress } = req.body
+  const { amount, currency = 'gbp', paymentMethodId, walletAddress } = req.body
   // console.log({ amount, currency, paymentMethodId, walletAddress })
   try {
     const paymentIntent = await stripeClient.paymentIntents.create({
@@ -65,8 +65,9 @@ router.post('/webhook', async (req, res) => {
     let event
     const signature = req.headers['stripe-signature']
     try {
+      console.log({ signature })
       event = stripeClient.webhooks.constructEvent(
-        req.rawBody,
+        req.body,
         signature,
         config.get('stripe.webhookSecret')
       )
