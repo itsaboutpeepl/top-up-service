@@ -32,7 +32,7 @@ const generateResponse = intent => {
 
 router.post('/pay', async (req, res) => {
   const { amount, currency = 'gbp', paymentMethodId, walletAddress } = req.body
-  // console.log({ amount, currency, paymentMethodId, walletAddress })
+  console.log({ amount, currency, paymentMethodId, walletAddress })
   try {
     const paymentIntent = await stripeClient.paymentIntents.create({
       amount,
