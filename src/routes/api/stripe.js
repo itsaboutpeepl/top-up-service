@@ -3,8 +3,6 @@ const bodyParser = require('body-parser')
 const router = require('express').Router()
 const { stripeClient } = require('@services/stripe')
 
-const mongoose = require('mongoose')
-// const PaymentIntent = mongoose.model('PaymentIntent')
 // const { mintTokensAndSendToken, generateCorrelationId } = require('@utils/fuseApi')
 
 const generateResponse = intent => {
@@ -27,7 +25,7 @@ const generateResponse = intent => {
       // Payment is complete, authentication not required
       // To cancel the payment after capture you will need to issue a Refund (https://stripe.com/docs/api/refunds)
       console.log('💰 Payment received!')
-      return { clientSecret: intent.client_secret }
+      return { clientSecret: intent.client_secret, requiresAction: false }
   }
 }
 
