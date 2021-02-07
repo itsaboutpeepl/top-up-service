@@ -4,7 +4,7 @@ const router = require('express').Router()
 const { stripeClient } = require('@services/stripe')
 
 const mongoose = require('mongoose')
-const PaymentIntent = mongoose.model('PaymentIntent')
+// const PaymentIntent = mongoose.model('PaymentIntent')
 // const { mintTokensAndSendToken, generateCorrelationId } = require('@utils/fuseApi')
 
 const generateResponse = intent => {
@@ -38,18 +38,11 @@ router.post('/pay', async (req, res) => {
     const paymentIntent = await stripeClient.paymentIntents.create({
       amount,
       currency,
+      metadata: { walletAddress, amount, currency },
       payment_method: paymentMethodId,
       confirm: true,
       use_stripe_sdk: true
     })
-    // console.log({ paymentIntent })
-    await PaymentIntent({
-      walletAddress,
-      currency,
-      amount,
-      paymentMethodId,
-      paymentIntentId: paymentIntent.id
-    }).save()
     return res.json({
       data: { paymentIntent: generateResponse(paymentIntent) }
     })
@@ -72,11 +65,11 @@ router.post('/webhook', bodyParser.text({ type: '*/*' }), async (req, res) => {
         signature,
         config.get('stripe.webhookSecret')
       )
-      console.log({ ...event })
     } catch (err) {
       return res.sendStatus(400)
     }
     data = event.data.object
+    console.log({ data })
     eventType = event.type
   } else {
     // Webhook signing is recommended, but if the secret is not configured in `config.js`,
@@ -87,7 +80,10 @@ router.post('/webhook', bodyParser.text({ type: '*/*' }), async (req, res) => {
 
   if (eventType === 'payment_intent.succeeded') {
     console.log('💰 Payment captured!')
-    // const { id } = data
+    const { id, metadata } = data
+    console.log({ ...metadata })
+    const { amount, walletAddress } = metadata
+    console.log({ amount, walletAddress })
     // const paymentIntent = await PaymentIntent.findOne({ paymentIntentId: id })
     // const correlationId = generateCorrelationId()
     // const jobRes = await mintTokensAndSendToken({

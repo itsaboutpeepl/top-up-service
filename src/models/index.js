@@ -1,7 +1,7 @@
 require('./Account')
 require('./User')
 require('./Payment')
-require('./PaymentIntent')
+// require('./PaymentIntent')
 
 module.exports = (mongoose) => {
   mongoose = mongoose || require('mongoose')
