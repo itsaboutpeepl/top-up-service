@@ -38,11 +38,10 @@ router.post('/pay', async (req, res) => {
     const paymentIntent = await stripeClient.paymentIntents.create({
       amount,
       currency,
-      metadata: { amount, currency },
+      metadata: { amount, currency, walletAddress },
       payment_method: paymentMethodId,
       confirm: true,
-      use_stripe_sdk: true,
-      customer: walletAddress
+      use_stripe_sdk: true
     })
     return res.json({
       data: { paymentIntent: generateResponse(paymentIntent) }
@@ -82,8 +81,7 @@ router.post('/webhook', bodyParser.text({ type: '*/*' }), async (req, res) => {
 
   if (eventType === 'payment_intent.succeeded') {
     console.log('💰 Payment captured!')
-    const { id, metadata, customer } = data
-    console.log({ ...metadata, customer })
+    // const { id } = data
     // const paymentIntent = await PaymentIntent.findOne({ paymentIntentId: id })
     // const correlationId = generateCorrelationId()
     // const jobRes = await mintTokensAndSendToken({
