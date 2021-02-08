@@ -39,7 +39,7 @@ router.post('/pay', async (req, res) => {
       currency,
       metadata: { amount, currency, walletAddress },
       payment_method: paymentMethodId,
-      // confirm: true,
+      confirm: true,
       use_stripe_sdk: true
     })
     return res.json({
