@@ -1,9 +1,8 @@
 const config = require('config')
-const bodyParser = require('body-parser')
 const { get } = require('lodash')
 const router = require('express').Router()
 const { stripeClient } = require('@services/stripe')
-// const { mintTokensAndSendToken, generateCorrelationId } = require('@utils/fuseApi')
+const { mintTokensAndSendToken, generateCorrelationId } = require('@utils/fuseApi')
 
 const generateResponse = intent => {
   // Generate a response based on the intent's status
@@ -77,12 +76,12 @@ router.post('/webhook', async (req, res) => {
     console.log('💰 Payment captured!')
     const { amount, walletAddress: toAddress } = get(data, ['charges', 'data', '0', 'metadata'], {})
     console.log(`Minting ${amount} ${toAddress} 💰!`)
-    // const correlationId = generateCorrelationId()
-    // await mintTokensAndSendToken({
-    //   correlationId,
-    //   toAddress,
-    //   amount
-    // })
+    const correlationId = generateCorrelationId()
+    await mintTokensAndSendToken({
+      correlationId,
+      toAddress,
+      amount
+    })
   } else if (eventType === 'payment_intent.payment_failed') {
     console.log('❌ Payment failed.')
   }
