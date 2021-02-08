@@ -3,8 +3,7 @@ const bodyParser = require('body-parser')
 const { get } = require('lodash')
 const router = require('express').Router()
 const { stripeClient } = require('@services/stripe')
-
-// const { mintTokensAndSendToken, generateCorrelationId } = require('@utils/fuseApi')
+const { mintTokensAndSendToken, generateCorrelationId } = require('@utils/fuseApi')
 
 const generateResponse = intent => {
   // Generate a response based on the intent's status
@@ -42,9 +41,17 @@ router.post('/pay', async (req, res) => {
       confirm: true,
       use_stripe_sdk: true
     })
-    return res.json({
-      data: { paymentIntent: generateResponse(paymentIntent) }
-    })
+    const response = generateResponse(paymentIntent)
+    if (!response.requiresAction) {
+      console.log(`Minting ${amount} ${walletAddress} 💰!`)
+      // const correlationId = generateCorrelationId()
+      // await mintTokensAndSendToken({
+      //   correlationId,
+      //   toAddress: walletAddress,
+      //   amount
+      // })
+    }
+    return res.json({ data: { paymentIntent: response } })
   } catch (error) {
     console.log({ error })
     return res.json({ error })
@@ -58,18 +65,15 @@ router.post('/webhook', bodyParser.text({ type: '*/*' }), async (req, res) => {
     let event
     const signature = req.headers['stripe-signature']
     try {
-      console.log({ signature })
       event = stripeClient.webhooks.constructEvent(
         req.body,
         signature,
         config.get('stripe.webhookSecret')
       )
-      console.log({ ...event })
     } catch (err) {
       return res.sendStatus(400)
     }
     data = event.data.object
-    console.log({ data })
     eventType = event.type
   } else {
     // Webhook signing is recommended, but if the secret is not configured in `config.js`,
@@ -80,12 +84,13 @@ router.post('/webhook', bodyParser.text({ type: '*/*' }), async (req, res) => {
 
   if (eventType === 'payment_intent.succeeded') {
     console.log('💰 Payment captured!')
-    // const { amount, currency, walletAddress } = get(data, "charges.data['0'].metadata", {})
+    const { amount, walletAddress: toAddress } = get(data, ['charges', 'data', '0', 'metadata'], {})
+    console.log(`Minting ${amount} ${toAddress} 💰!`)
     // const correlationId = generateCorrelationId()
-    // const jobRes = await mintTokensAndSendToken({
+    // await mintTokensAndSendToken({
     //   correlationId,
-    //   toAddress: walletAddress,
-    //   amount: amount
+    //   toAddress,
+    //   amount
     // })
   } else if (eventType === 'payment_intent.payment_failed') {
     console.log('❌ Payment failed.')
