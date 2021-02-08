@@ -47,6 +47,7 @@
     "express-async-errors": "^3.1.1",
     "express-jwt": "^6.0.0",
     "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.20",
     "methods": "^1.1.2",
     "module-alias": "^2.2.2",
     "moment": "^2.29.1",
@@ -54,6 +55,7 @@
     "morgan": "^1.10.0",
     "plaid": "^8.1.0",
     "request": "^2.88.2",
+    "stripe": "^8.132.0",
     "validator": "^13.1.17"
   },
   "devDependencies": {

@@ -22,6 +22,16 @@ const init = async () => {
 
   app.use(morgan('common'))
 
+  app.use(
+    express.json({
+      verify: function (req, res, buf) {
+        if (req.originalUrl === '/api/stripe/webhook') {
+          req.rawBody = buf.toString()
+        }
+      }
+    })
+  )
+
   app.use(bodyParser.urlencoded({ extended: false }))
   app.use(bodyParser.json())
 
