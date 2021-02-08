@@ -1,5 +1,6 @@
 const config = require('config')
 const bodyParser = require('body-parser')
+const { get } = require('lodash')
 const router = require('express').Router()
 const { stripeClient } = require('@services/stripe')
 
@@ -79,16 +80,13 @@ router.post('/webhook', bodyParser.text({ type: '*/*' }), async (req, res) => {
 
   if (eventType === 'payment_intent.succeeded') {
     console.log('💰 Payment captured!')
-    // const { id } = data
-    // const paymentIntent = await PaymentIntent.findOne({ paymentIntentId: id })
+    // const { amount, currency, walletAddress } = get(data, "charges.data['0'].metadata", {})
     // const correlationId = generateCorrelationId()
     // const jobRes = await mintTokensAndSendToken({
     //   correlationId,
-    //   toAddress: paymentIntent.walletAddress,
-    //   amount: paymentIntent.amount
+    //   toAddress: walletAddress,
+    //   amount: amount
     // })
-    // paymentIntent.set('fuseJobId', jobRes.data._id)
-    // await paymentIntent.save()
   } else if (eventType === 'payment_intent.payment_failed') {
     console.log('❌ Payment failed.')
   }
