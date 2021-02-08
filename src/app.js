@@ -22,8 +22,14 @@ const init = async () => {
 
   app.use(morgan('common'))
 
-  app.use(bodyParser.urlencoded({ extended: false }))
-  app.use(bodyParser.json())
+  app.use((req, res, next) => {
+    if (req.originalUrl === '/api/stripe/webhook') {
+      next()
+    } else {
+      bodyParser.urlencoded({ extended: false })(req, res, next)
+      bodyParser.json()(req, res, next)
+    }
+  })
 
   mongoose.set('debug', config.get('mongo.debug'))
   mongoose.set('useFindAndModify', false)

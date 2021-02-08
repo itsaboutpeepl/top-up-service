@@ -3,7 +3,7 @@ const bodyParser = require('body-parser')
 const { get } = require('lodash')
 const router = require('express').Router()
 const { stripeClient } = require('@services/stripe')
-const { mintTokensAndSendToken, generateCorrelationId } = require('@utils/fuseApi')
+// const { mintTokensAndSendToken, generateCorrelationId } = require('@utils/fuseApi')
 
 const generateResponse = intent => {
   // Generate a response based on the intent's status
@@ -48,10 +48,10 @@ router.post('/pay', async (req, res) => {
   }
 })
 
-router.post('/webhook', bodyParser.text({ type: '*/*' }), async (req, res) => {
+router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req, res) => {
   let data, eventType
 
-  if (config.get('stripe.webhookSecret')) {
+  if (config.has('stripe.webhookSecret')) {
     let event
     const signature = req.headers['stripe-signature']
     try {
@@ -61,6 +61,7 @@ router.post('/webhook', bodyParser.text({ type: '*/*' }), async (req, res) => {
         config.get('stripe.webhookSecret')
       )
     } catch (err) {
+      console.log({ err })
       return res.sendStatus(400)
     }
     data = event.data.object
