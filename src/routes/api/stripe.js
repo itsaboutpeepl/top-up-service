@@ -48,7 +48,7 @@ router.post('/pay', async (req, res) => {
   }
 })
 
-router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req, res) => {
+router.post('/webhook', async (req, res) => {
   let data, eventType
 
   if (config.has('stripe.webhookSecret')) {
@@ -56,7 +56,7 @@ router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req
     const signature = req.headers['stripe-signature']
     try {
       event = stripeClient.webhooks.constructEvent(
-        req.body,
+        req.rawBody,
         signature,
         config.get('stripe.webhookSecret')
       )
