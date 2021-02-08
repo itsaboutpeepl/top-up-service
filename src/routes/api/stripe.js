@@ -41,17 +41,7 @@ router.post('/pay', async (req, res) => {
       confirm: true,
       use_stripe_sdk: true
     })
-    const response = generateResponse(paymentIntent)
-    if (!response.requiresAction) {
-      console.log(`Minting ${amount} ${walletAddress} 💰!`)
-      // const correlationId = generateCorrelationId()
-      // await mintTokensAndSendToken({
-      //   correlationId,
-      //   toAddress: walletAddress,
-      //   amount
-      // })
-    }
-    return res.json({ data: { paymentIntent: response } })
+    return res.json({ data: { paymentIntent: generateResponse(paymentIntent) } })
   } catch (error) {
     console.log({ error })
     return res.json({ error })
