@@ -73,7 +73,7 @@ router.post('/webhook', async (req, res) => {
     await mintTokensAndSendToken({
       correlationId,
       toAddress,
-      amount
+      amount: amount / 100
     })
   } else if (eventType === 'payment_intent.payment_failed') {
     console.log('❌ Payment failed.')
